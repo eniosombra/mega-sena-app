@@ -1,25 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react'
 
-function App() {
+export function App() {
+  const [selectedNumbers, setSelectedNumbers] = useState([])
+
+  const styleButton = (num) => ({
+    border: 'none',
+    borderRadius: '100%',
+    height: '64px',
+    width: '64px',
+    fontSize: '16px',
+    cursor: 'pointer',
+    margin: '12px',
+    backgroundColor: selectedNumbers.includes(num) ? '#82E0AA' : '#F7DC6F'
+  })
+
+  const handleAdd = (num) =>
+    selectedNumbers.includes(num)
+      ? setSelectedNumbers([...selectedNumbers.filter((n) => n !== num)])
+      : setSelectedNumbers([...selectedNumbers, num])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <div style={{ width: '60%' }}>
+      {[...Array(36).keys()].map((num) => (
+        <button
+          key={num}
+          onClick={() => handleAdd(num + 1)}
+          style={styleButton(num + 1)}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+          {num + 1}
+        </button>
+      ))}
 
-export default App;
+      <h3>Número(s) selecionado(s):</h3>
+      {selectedNumbers.map((num) => (
+        <h1 key={num}>{num}</h1>
+      ))}
+    </div>
+  )
+}
